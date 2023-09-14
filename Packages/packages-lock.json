@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.crunchfish.handtracking": {
-      "version": "file:D:/Shano/LUMaster/MAMN60-AR/TouchlessA3D-XR-SDK-2.3.2-LTH-evaluationVersionNotCommercial-Windows/CrunchfishUnitySDK",
+      "version": "file:C:/Users/localadm/Downloads/TouchlessA3D-XR-SDK-2.3.2/TouchlessA3D-XR-SDK-2.3.2-LTH-evaluationVersionNotCommercial-Windows/CrunchfishUnitySDK",
       "depth": 0,
       "source": "local",
       "dependencies": {
