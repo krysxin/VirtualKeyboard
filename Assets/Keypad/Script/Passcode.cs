@@ -10,7 +10,7 @@ public class Passcode : MonoBehaviour
     int NrIndex = 0;
     string alpha;
     public Text UiText = null;
-
+    
     public void CodeFunction(string Numbers)
     {
         NrIndex++;
@@ -28,8 +28,17 @@ public class Passcode : MonoBehaviour
     }
     public void Delete()
     {
+        int Nrlength = Nr.Length;
         NrIndex++;
-        Nr = null;
+        if(Nrlength > 0)
+        {
+            Nr = Nr.Substring(0, Nrlength - 1); 
+        }
+        else
+        {
+            Nr = null;
+        }
+
         UiText.text = Nr;
     }
 }
