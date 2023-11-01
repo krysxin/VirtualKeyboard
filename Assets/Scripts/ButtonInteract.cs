@@ -49,9 +49,9 @@ namespace HandTracking
 
         public void Interact(InteractionState state, MultiPointerHitInfo hitInfo, Ray ray, Hand hand, MultiPointer pointer)
         {
-             
                     if (canInteract && state == InteractionState.EnterActive)
-                    {
+                     {
+                        Debug.Log("Interaction state: " + state + " finger: " + hitInfo.fingerIndex);
                         _uiText.text = _uiText.text + ButtonText;
                         //Play sound
                         clickSound.Play();
