@@ -35,8 +35,8 @@ namespace HandTracking
 
         public void Update()
         {
-            
-            if(canInteract == false && _cooldownTime > InteractionCooldown)
+
+            if (canInteract == false && _cooldownTime > InteractionCooldown)
             {
                 colorBlock.normalColor = Color.white;
                 button.colors = colorBlock;
@@ -49,37 +49,37 @@ namespace HandTracking
 
         public void Interact(InteractionState state, MultiPointerHitInfo hitInfo, Ray ray, Hand hand, MultiPointer pointer)
         {
-                    if (canInteract && state == InteractionState.EnterActive)
-                     {
-                        Debug.Log("Interaction state: " + state + " finger: " + hitInfo.fingerIndex);
-                        _uiText.text = _uiText.text + ButtonText;
-                        //Play sound
-                        clickSound.Play();
+            if (canInteract && state == InteractionState.EnterActive)
+            {
+                Debug.Log("Interaction state: " + state + " finger: " + hitInfo.fingerIndex + " hand: " + hand.handedness);
+                _uiText.text = _uiText.text + ButtonText;
+                //Play sound
+                clickSound.Play();
 
-                        //Change color
-                        colorBlock = button.colors;
-                        colorBlock.normalColor = pressedColor;
-                        button.colors = colorBlock;
+                //Change color
+                colorBlock = button.colors;
+                colorBlock.normalColor = pressedColor;
+                button.colors = colorBlock;
 
-                        // Set canInteract to false to prevent further interactions
-                        canInteract = false;
+                // Set canInteract to false to prevent further interactions
+                canInteract = false;
 
-                        _cooldownTime = 0;
-                    }
-                    if (state != _pastState)
-                    {
-                        _pastState = state;
-                    }
-                    return;
-                
-            
+                _cooldownTime = 0;
+            }
+            if (state != _pastState)
+            {
+                _pastState = state;
+            }
+            return;
 
-            
+
+
+
         }
 
     }
 
-    
+
 
 }
 
