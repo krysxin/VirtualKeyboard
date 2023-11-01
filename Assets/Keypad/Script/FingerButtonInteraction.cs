@@ -34,13 +34,11 @@ public class FingerButtonInteraction : MonoBehaviour
         pressedColor = new Color32(165, 171, 211, 255);
         //fingerTipLeft = fingerTipLeft.transform;
         //fingerTipRight = GameObject.FindWithTag("right_tip").transform;
-        Debug.Log(fingerTipLeft.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(transform.position);
         float distanceleft = Vector3.Distance(transform.position, fingerTipLeft.position);
         float distanceright = Vector3.Distance(transform.position, fingerTipRight.position);
 

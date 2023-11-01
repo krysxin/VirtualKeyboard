@@ -49,11 +49,7 @@ namespace HandTracking
 
         public void Interact(InteractionState state, MultiPointerHitInfo hitInfo, Ray ray, Hand hand, MultiPointer pointer)
         {
-            foreach (GameObject tips in fingerTips)
-            {
-                float distance = Vector3.Distance(transform.position, tips.transform.position);
-                if(distance < 1.0f)
-                {
+             
                     if (canInteract && state == InteractionState.EnterActive)
                     {
                         _uiText.text = _uiText.text + ButtonText;
@@ -75,8 +71,8 @@ namespace HandTracking
                         _pastState = state;
                     }
                     return;
-                }
-            }
+                
+            
 
             
         }
