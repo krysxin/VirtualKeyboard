@@ -28,9 +28,16 @@ public class Passcode : MonoBehaviour
     }
     public void Delete()
     {
+        if (Nr == null)
+        {
+            return;
+        }
+
         int Nrlength = Nr.Length;
         NrIndex++;
-        if(Nrlength > 0)
+
+        
+        if (Nrlength > 0)
         {
             Nr = Nr.Substring(0, Nrlength - 1); 
         }
@@ -40,5 +47,16 @@ public class Passcode : MonoBehaviour
         }
 
         UiText.text = Nr;
+    }
+    public void Clear()
+    {
+        if (Nr == null)
+        {
+            return;
+        }
+        Nr = null;
+
+        UiText.text = Nr;
+
     }
 }

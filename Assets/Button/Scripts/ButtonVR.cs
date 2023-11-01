@@ -14,7 +14,7 @@ public class ButtonVR : MonoBehaviour
     public UnityEvent onPress;
     public UnityEvent onRelease;
     GameObject presser;
-    AudioSource sound;
+    public AudioSource sound;
     bool isPressed;
 
     void Start()

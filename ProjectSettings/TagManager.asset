@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - left_tip
+  - right_tip
+  - TextField
+  - tips
   layers:
   - Default
   - TransparentFX

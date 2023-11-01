@@ -5,14 +5,14 @@ using TMPro;
 
 public class KeyboardButton : MonoBehaviour
 {
-    Keyboard keyboard;
+    ARKeyboard keyboard;
     TextMeshProUGUI buttonText;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        keyboard = GetComponentInParent<Keyboard>();
+        keyboard = GetComponentInParent<ARKeyboard>();
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
         if (buttonText.text.Length == 1)
         {
