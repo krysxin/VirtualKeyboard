@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace HandTracking
 {
+    [RequireComponent(typeof(Outline))]
+    [RequireComponent(typeof(AudioSource))]
     public class ButtonInteract : MonoBehaviour, MultiInteractable
     {
         private Text _uiText;
         public string ButtonText;
+
+        private float OutlineCutoffDistance = 0.07f;
+
         private GameObject _buttonText;
         private GameObject[] fingerTips;
         private InteractionState _pastState = InteractionState.Neutral;
@@ -18,54 +24,90 @@ namespace HandTracking
         public float InteractionCooldown = 1.0f;
         [SerializeField]
         private bool canInteract = true; // Flag to track whether interaction is allowed
-        private Button button;
-        private ColorBlock colorBlock;
-        private Color pressedColor;
+        private Button _button;
+        private ColorBlock _colorBlock;
+        private Color _pressedColor;
         private float _cooldownTime;
+
+        private Shadow _outline;
+
+        private PointerEventData _eventData;
 
         public void Start()
         {
             _uiText = GameObject.FindWithTag("TextField").GetComponent<Text>();
+
+            _button = GetComponent<Button>();
+            _colorBlock = _button.colors;
+
             _buttonText = transform.GetChild(0).gameObject;
             _buttonText.GetComponent<Text>().text = ButtonText;
-            fingerTips = GameObject.FindGameObjectsWithTag("tips");
-            button = gameObject.GetComponent<Button>();
-            pressedColor = new Color32(165, 171, 211, 255);
-        }
 
-        public void Update()
-        {
+            _outline = GetComponent<Outline>();
+            _outline.effectColor = new Color(0, 0, 0, 1);
+            _outline.effectDistance = Vector2.zero;
 
-            if (canInteract == false && _cooldownTime > InteractionCooldown)
-            {
-                colorBlock.normalColor = Color.white;
-                button.colors = colorBlock;
-
-                // Reset the flag to allow interaction again
-                canInteract = true;
-            }
-            _cooldownTime += Time.deltaTime;
+            // Dummy data to sent to the event handler 
+            _eventData = new PointerEventData(EventSystem.current);
         }
 
         public void Interact(InteractionState state, MultiPointerHitInfo hitInfo, Ray ray, Hand hand, MultiPointer pointer)
         {
-            if (canInteract && state == InteractionState.EnterActive)
+            switch (state)
             {
-                Debug.Log("Interaction state: " + state + " finger: " + hitInfo.fingerIndex + " hand: " + hand.handedness);
-                _uiText.text = _uiText.text + ButtonText;
-                //Play sound
-                clickSound.Play();
+                case InteractionState.Exit:
+                    _outline.effectDistance = Vector2.zero;
 
-                //Change color
-                colorBlock = button.colors;
-                colorBlock.normalColor = pressedColor;
-                button.colors = colorBlock;
+                    /* Sends signals to the button to stop being pressed and/or hovered */
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerExitHandler);
+                    canInteract = true;
+                    break;
 
-                // Set canInteract to false to prevent further interactions
-                canInteract = false;
+                case InteractionState.EnterActive:
+                    if (canInteract)
+                    {
 
-                _cooldownTime = 0;
+                        _uiText.text = _uiText.text + ButtonText;
+                        //Play sound
+                        clickSound.Play();
+
+                        ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerDownHandler);
+                        // Set canInteract to false to prevent further interactions
+                        canInteract = false;
+
+                    }
+                    break;
+
+
+                case InteractionState.EnterNeutral:
+
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerUpHandler);
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerEnterHandler);
+                    canInteract = true;
+                    break;
+
+                case InteractionState.Neutral:
+                    break;
             }
+            if (hitInfo != null)
+            {
+
+                float dist = hitInfo.rayDistance;
+                if (dist > OutlineCutoffDistance)
+                {
+                    _outline.effectDistance = Vector2.zero;
+                }
+                else
+                {
+                    // TODO: Replace 100 with variable
+                    dist = 5 - dist * 100;
+                    _outline.effectDistance = new Vector2(dist, dist);
+                    //_outline.effectColor *= 255 - hitInfo.rayDistance * 255;
+                }
+            }
+
+
             if (state != _pastState)
             {
                 _pastState = state;
@@ -76,6 +118,8 @@ namespace HandTracking
 
 
         }
+
+
 
     }
 
