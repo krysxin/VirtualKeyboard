@@ -4,7 +4,8 @@ Shader "Unlit/NewUnlitShader"
     {
         _TargetX ("Target X UV Position", float) = 0.5
         _TargetY ("Target Y UV Position", float) = 0.5
-        _Strength ("Fade Strength", Range(0.0, 1)) = 0.5
+        _Color ("Shadow Color", Color) = (0, 0, 0, 1)
+        _Strength ("Fade Strength", Range(0.0, 5)) = 5
     }
     SubShader
     {
@@ -37,6 +38,7 @@ Shader "Unlit/NewUnlitShader"
             float _TargetX;
             float _TargetY;
             float _Strength;
+            half4 _Color;
 
             v2f vert (appdata v)
             {
@@ -48,7 +50,7 @@ Shader "Unlit/NewUnlitShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                half4 col = float4(0, 0, 0, 1);
+                half4 col = _Color;
                 float2 target = float2(_TargetX - 0.5, _TargetY - 0.5) * 2;
                 float dist = _Strength / 2  - length(target- i.uv);
                 float res = clamp(1 * dist, 0, 1);

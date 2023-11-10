@@ -29,5 +29,6 @@ Material:
     - _Strength: 1
     - _TargetX: 0.75
     - _TargetY: 0.75
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

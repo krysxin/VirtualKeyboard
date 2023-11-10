@@ -8,25 +8,18 @@ namespace HandTracking
 {
     [RequireComponent(typeof(Outline))]
     [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(Button))]
     public class ButtonInteract : MonoBehaviour, MultiInteractable
     {
-        private Text _uiText;
+        private Text _textfield;
         public string ButtonText;
 
         private float OutlineCutoffDistance = 0.07f;
 
         private GameObject _buttonText;
-        private GameObject[] fingerTips;
-        private InteractionState _pastState = InteractionState.Neutral;
-
-        public AudioSource clickSound;
 
         public float InteractionCooldown = 1.0f;
-        [SerializeField]
-        private bool canInteract = true; // Flag to track whether interaction is allowed
         private Button _button;
-        private ColorBlock _colorBlock;
-        private Color _pressedColor;
         private float _cooldownTime;
 
         private Shadow _outline;
@@ -35,10 +28,9 @@ namespace HandTracking
 
         public void Start()
         {
-            _uiText = GameObject.FindWithTag("TextField").GetComponent<Text>();
+            _textfield = GameObject.FindWithTag("TextField").GetComponent<Text>();
 
             _button = GetComponent<Button>();
-            _colorBlock = _button.colors;
 
             _buttonText = transform.GetChild(0).gameObject;
             _buttonText.GetComponent<Text>().text = ButtonText;
@@ -47,7 +39,7 @@ namespace HandTracking
             _outline.effectColor = new Color(0, 0, 0, 1);
             _outline.effectDistance = Vector2.zero;
 
-            // Dummy data to sent to the event handler 
+            // Dummy data to sent to event handler 
             _eventData = new PointerEventData(EventSystem.current);
         }
 
@@ -55,44 +47,41 @@ namespace HandTracking
         {
             switch (state)
             {
+                /* If finger moves away, remove outline and reset button state */
                 case InteractionState.Exit:
                     _outline.effectDistance = Vector2.zero;
-
                     /* Sends signals to the button to stop being pressed and/or hovered */
                     ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerUpHandler);
                     ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerExitHandler);
-                    canInteract = true;
                     break;
 
+                /* When close enough, trigger button click once */
                 case InteractionState.EnterActive:
-                    if (canInteract)
-                    {
 
-                        _uiText.text = _uiText.text + ButtonText;
-                        //Play sound
-                        clickSound.Play();
-
-                        ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerDownHandler);
-                        // Set canInteract to false to prevent further interactions
-                        canInteract = false;
-
-                    }
+                    _textfield.text = _textfield.text + ButtonText;
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerClickHandler);
                     break;
 
+                /* If remaining in active state, keep button down */
+                case InteractionState.Active:
 
+                    ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerDownHandler);
+                    break;
+
+                /* If finger is in front of button, but not yet close enough to click */
                 case InteractionState.EnterNeutral:
 
                     ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerUpHandler);
                     ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerEnterHandler);
-                    canInteract = true;
                     break;
 
+                /* If finger remains in previous mode */
                 case InteractionState.Neutral:
                     break;
             }
+
             if (hitInfo != null)
             {
-
                 float dist = hitInfo.rayDistance;
                 if (dist > OutlineCutoffDistance)
                 {
@@ -103,18 +92,8 @@ namespace HandTracking
                     // TODO: Replace 100 with variable
                     dist = 5 - dist * 100;
                     _outline.effectDistance = new Vector2(dist, dist);
-                    //_outline.effectColor *= 255 - hitInfo.rayDistance * 255;
                 }
             }
-
-
-            if (state != _pastState)
-            {
-                _pastState = state;
-            }
-            return;
-
-
 
 
         }
