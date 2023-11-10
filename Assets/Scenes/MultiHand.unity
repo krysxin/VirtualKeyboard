@@ -650,6 +650,7 @@ MonoBehaviour:
   applyFilter: 1
   changesHandOnDoublePinch: 0
   requirePalmDirection: 0
+  useOrthographicRays: 0
   input: {fileID: 1259225622}
   interactionRayDistance: 0.04
   useDropShadows: 1
@@ -936,36 +937,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 4.93, y: 4}
   m_UseGraphicAlpha: 1
---- !u!114 &1713613634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4875655933862403408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc54eb7e26101c14594cb7e575faa976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UiText: {fileID: 656661294}
---- !u!114 &1713613638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4875655933862403408}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca7dcd3dcaac80d4aa731ebf7859ab92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fingerTipLeft: {fileID: 0}
-  fingerTipRight: {fileID: 0}
-  interactionThreshold: 0.05
-  num: a
-  clickSound: {fileID: 0}
 --- !u!1001 &1738725495
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -973,13 +944,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2767057020146165291, guid: 720e909a52be26044a905204d3137dbd, type: 3}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611560511081657274, guid: 720e909a52be26044a905204d3137dbd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5937613928408570888, guid: 720e909a52be26044a905204d3137dbd, type: 3}
       propertyPath: m_Name
       value: HandTrackingCamera
       objectReference: {fileID: 0}
     - target: {fileID: 5937613928408570889, guid: 720e909a52be26044a905204d3137dbd, type: 3}
       propertyPath: cameraDeviceIndex
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5937613928408570895, guid: 720e909a52be26044a905204d3137dbd, type: 3}
       propertyPath: m_RootOrder
@@ -1648,7 +1627,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1713613634}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Passcode, Assembly-CSharp
         m_MethodName: Delete
         m_Mode: 1
@@ -1764,8 +1743,6 @@ GameObject:
   - component: {fileID: 4875655933862403413}
   - component: {fileID: 4875655933862403414}
   - component: {fileID: 4875655933862403415}
-  - component: {fileID: 1713613634}
-  - component: {fileID: 1713613638}
   m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
@@ -1780,8 +1757,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4875655933862403408}
-  m_LocalRotation: {x: -0.024458578, y: 0.028505174, z: -0.0014905311, w: 0.99929327}
-  m_LocalPosition: {x: 0, y: 0, z: 0.435}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.68}
   m_LocalScale: {x: 0.00040801, y: 0.0004, z: 0.0004}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1794,7 +1771,7 @@ RectTransform:
   - {fileID: 1527328589}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -2.797, y: 3.274, z: -0.251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.08, y: 0.03}
