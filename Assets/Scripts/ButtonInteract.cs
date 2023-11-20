@@ -16,15 +16,23 @@ namespace HandTracking
 
         private float OutlineCutoffDistance = 0.07f;
 
-        private GameObject _buttonText;
+        private Text _buttonText;
 
         public float InteractionCooldown = 1.0f;
         private Button _button;
         private float _cooldownTime;
 
+        public ButtonType buttonType = ButtonType.Regular;
         private Shadow _outline;
 
         private PointerEventData _eventData;
+        public enum ButtonType
+        {
+            Regular,
+            Delete,
+            Clear,
+
+        }
 
         public void Start()
         {
@@ -32,8 +40,13 @@ namespace HandTracking
 
             _button = GetComponent<Button>();
 
-            _buttonText = transform.GetChild(0).gameObject;
-            _buttonText.GetComponent<Text>().text = ButtonText;
+            _buttonText = transform.GetChild(0).gameObject.GetComponent<Text>();
+            switch (buttonType)
+            {
+                case ButtonType.Regular:
+                    _buttonText.text = ButtonText;
+                    break;
+            }
 
             _outline = GetComponent<Outline>();
             _outline.effectColor = new Color(0, 0, 0, 1);
@@ -57,8 +70,30 @@ namespace HandTracking
 
                 /* When close enough, trigger button click once */
                 case InteractionState.EnterActive:
+                    switch (buttonType)
+                    {
+                        case ButtonType.Regular:
+                            _textfield.text = _textfield.text + ButtonText;
+                            break;
 
-                    _textfield.text = _textfield.text + ButtonText;
+                        case ButtonType.Delete:
+                            int currentTextLength = _textfield.text.Length;
+                            if (currentTextLength > 0)
+                            {
+                                _textfield.text = _textfield.text.Substring(0, currentTextLength - 1);
+                            }
+                            else
+                            {
+                                _textfield.text = null;
+                            }
+
+                            break;
+
+                        case ButtonType.Clear:
+                            _textfield.text = null;
+                            break;
+
+                    }
                     ExecuteEvents.Execute(gameObject, _eventData, ExecuteEvents.pointerClickHandler);
                     break;
 

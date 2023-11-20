@@ -1,4 +1,4 @@
-Shader "Unlit/NewUnlitShader"
+Shader "Unlit/ShadowShader"
 {
     Properties
     {
@@ -52,8 +52,8 @@ Shader "Unlit/NewUnlitShader"
             {
                 half4 col = _Color;
                 float2 target = float2(_TargetX - 0.5, _TargetY - 0.5) * 2;
-                float dist = _Strength / 2  - length(target- i.uv);
-                float res = clamp(1 * dist, 0, 1);
+                float dist = _Strength / 2  - length(target - i.uv);
+                float res = clamp(dist, 0, 1);
                 col.w = res;
                 return col;
             }
