@@ -8,6 +8,7 @@ TagManager:
   - right_tip
   - TextField
   - tips
+  - InputText
   layers:
   - Default
   - TransparentFX

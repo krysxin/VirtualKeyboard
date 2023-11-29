@@ -12,7 +12,9 @@ namespace HandTracking
     public class ButtonInteract : MonoBehaviour, MultiInteractable
     {
         private Text _textfield;
+        private GameObject inputPreview;
         public string ButtonText;
+
 
         private float OutlineCutoffDistance = 0.07f;
 
@@ -37,6 +39,7 @@ namespace HandTracking
         public void Start()
         {
             _textfield = GameObject.FindWithTag("TextField").GetComponent<Text>();
+            inputPreview = GameObject.FindWithTag("InputText");
 
             _button = GetComponent<Button>();
 
@@ -73,6 +76,7 @@ namespace HandTracking
                     switch (buttonType)
                     {
                         case ButtonType.Regular:
+                            Destroy(inputPreview);
                             _textfield.text = _textfield.text + ButtonText;
                             break;
 
@@ -86,7 +90,7 @@ namespace HandTracking
                             {
                                 _textfield.text = null;
                             }
-
+                            Destroy(inputPreview);
                             break;
 
                         case ButtonType.Clear:
